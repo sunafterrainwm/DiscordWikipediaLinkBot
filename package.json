@@ -1,0 +1,33 @@
+{
+	"name": "discordwikipedialinkbot",
+	"version": "0.0.9",
+	"description": "Discord中文維基百科連結Bot",
+	"main": "bot.js",
+	"scripts": {
+		"bot": "node bot.js",
+		"test": "npm run eslint && npm run bot",
+		"eslint": "eslint bot.js && eslint parselink.js && eslint conf/conf.js --fix"
+	},
+	"author": "sunny00217wm",
+	"license": "GPL-3.0-or-later",
+	"dependencies": {
+		"discord.js": "^12.5.1"
+	},
+	"devDependencies": {
+		"eslint": "^7.22.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sunny00217wm/DiscordWikipediaLinkBot.git"
+	},
+	"keywords": [
+		"discordwikipedialinkbot",
+		"discord",
+		"wikipedialinkbot",
+		"linkbot"
+	],
+	"bugs": {
+		"url": "https://github.com/sunny00217wm/DiscordWikipediaLinkBot/issues"
+	},
+	"homepage": "https://github.com/sunny00217wm/DiscordWikipediaLinkBot#readme"
+}
