@@ -5,7 +5,7 @@
 	"main": "bot.js",
 	"scripts": {
 		"bot": "node bot.js",
-		"test": "eslint && npm run bot",
+		"test": "npm run eslint && npm run bot",
 		"eslint": "eslint bot.js && eslint lib/*.js && eslint conf/conf.js --fix"
 	},
 	"author": "sunny00217wm",
@@ -16,9 +16,6 @@
 		"pg": "^8.5.1"
 	},
 	"devDependencies": {
-		"@types/node": "^14.14.35",
-		"@typescript-eslint/eslint-plugin": "^4.18.0",
-		"@typescript-eslint/parser": "^4.18.0",
 		"eslint": "^7.22.0"
 	},
 	"repository": {
