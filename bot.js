@@ -3,15 +3,16 @@ const Discord = require( "discord.js" ),
 	conf = require( "./conf/conf.js" ),
 	parselink = require( "./lib/parselink.js" ),
 	setting = require( "./lib/setting.js" ),
-	command = require( "./lib/command.js" );
+	command = require( "./lib/command.js" ),
+	log = new ( require( "./lib/console.js" ) )( "bot.js" );
 //	message = require( "./lib/message.js" );
 
-let parseret;
+let parseret, logs = "";
 
 client.login( conf.auth );
 
 client.on( "ready",function () {
-	console.log( `[bot.js]Logged in as ${ client.user.tag }.` );
+	log.add( null, `Logged in as ${ client.user.tag }.` );
 } );
 
 client.on( "message", function ( msg ) {
@@ -20,29 +21,38 @@ client.on( "message", function ( msg ) {
 	if ( author.tag === client.user.tag ) {
 		return;
 	}
-	console.log( `[bot.js]<${ id }>: Get msg "${ content }" from ${ author.tag }` );
-	if ( content.match( /^\// ) ) {
-		command( id.toString(), content, channel );
+	logs = `from: ${ author.tag }, message: ${ content.replace( /\n/g, "\\n" ) }`;
+	if ( content.match( /^\/|^\!/ ) ) {
+		command( id.toString(), msg, logs );
 	} else {
 		if ( setting.get( id.toString() ) ) {
 			if ( setting.get( id.toString(), "statue" ) === "stop" ) {
-				console.log( `[bot.js]<${ id }>: statue: stop` );
+				logs += ", statue: stop";
+				log.add( id, logs );
 				return;
-			} else if ( setting.get( id.toString(), "statue" ) === "optin" &&
-				!new RegExp( setting.get( id.toString(), "RegExp" ) ).exec( content )
-			) {
-				console.log( `[bot.js]<${ id }>: statue: optin, regexp: /${ setting.get( id.toString(), "RegExp" ) }/, match: false` );
-				return;
-			} else if ( setting.get( id.toString(), "statue" ) === "optout" &&
-				new RegExp( setting.get( id.toString(), "RegExp" ) ).exec( content )
-			) {
-				console.log( `[bot.js]<${ id }>: statue: optout, regexp: /${ setting.get( id.toString(), "RegExp" ) }/, match: true` );
-				return;
+			} else if ( setting.get( id.toString(), "statue" ) === "optin" ) {
+				if ( new RegExp( setting.get( id.toString(), "RegExp" ) ).exec( content ) ) {
+					logs += `, statue: optout, regexp: /${ setting.get( id.toString(), "RegExp" ) }/, match: true`;
+				} else {
+					logs += `, statue: optout, regexp: /${ setting.get( id.toString(), "RegExp" ) }/, match: false`;
+					log.add( id, logs );
+					return;
+				}
+			} else if ( setting.get( id.toString(), "statue" ) === "optout" ) {
+				if ( new RegExp( setting.get( id.toString(), "RegExp" ) ).exec( content ) ) {
+					logs += `, statue: optout, regexp: /${ setting.get( id.toString(), "RegExp" ) }/, match: true`;
+					return;
+				} else {
+					logs += `, statue: optout, regexp: /${ setting.get( id.toString(), "RegExp" ) }/, match: false`;
+				}
+			} else {
+				logs += ", statue: start"
 			}
 		}
 		parseret = parselink( content, setting.get( id.toString(), "articlepath" ) || "https://zh.wikipedia.org/wiki/" );
 		if ( parseret.length > 0 ) {
-			console.log( `[bot.js]<${ id }>: Parse url:\n${ parseret }` );
+			logs += `, parse urls: \n${ parseret }`
+			log.add( id, logs );
 			channel.send( parseret );
 		}
 	}

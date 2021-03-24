@@ -13,6 +13,8 @@ module.exports = {
 	//	"23456789012": true									// 在頻道 23456789012 啟用
 	},
 	"parselimit": 10,										// 解析上限，設為 0 表不限制
+	"group-setting": "conf/setting.json",					// 頻道設定存放處的相對路徑
+	"log": "log/run.log",									// 紀錄檔案的相對路徑，設為空字串表不紀錄
 	"msg": {												// 設定bot發送的訊息
 		"bot-start": "感謝您使用本機器人，當您輸入[[頁面名]]或{{模板名}}時，機器人將會自動回覆連結",	// $1: channel id
 		"command-help": {

@@ -1,6 +1,6 @@
 {
 	"name": "discordwikipedialinkbot",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Discord中文維基百科連結Bot",
 	"main": "bot.js",
 	"scripts": {
