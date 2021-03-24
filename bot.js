@@ -4,8 +4,19 @@ const Discord = require( "discord.js" ),
 	parselink = require( "./lib/parselink.js" ),
 	setting = require( "./lib/setting.js" ),
 	command = require( "./lib/command.js" ),
-	log = new ( require( "./lib/console.js" ) )( "bot.js" );
-//	message = require( "./lib/message.js" );
+	log = new ( require( "./lib/console.js" ) )( "bot.js" ),
+	message = require( "./lib/message.js" );
+
+if ( !conf["setting-order"] || [ "channelFirst", "guildFirst" ].indexOf( conf["setting-order"] ) === -1 ) {
+	class ConfigError extends Error {
+		constructor ( msg ) {
+			super( msg );
+			super.name = "ConfigError";
+		}
+	}
+
+	throw new ConfigError( "Error: The value of setting-order at \"conf/conf.js\" can't be understood. It only could be 'channelFirst' or 'guildFirst'." );
+}
 
 let parseret, logs = "";
 
@@ -16,8 +27,8 @@ client.on( "ready",function () {
 } );
 
 client.on( "message", function ( msg ) {
-	var { author, channel, content } = msg,
-		{ id } = channel;
+	let { author, channel, content, guild } = msg,
+		{ id } = conf["setting-order"] = "guildFirst" ? guild || channel : channel;
 	if ( author.tag === client.user.tag ) {
 		return;
 	}
@@ -48,12 +59,26 @@ client.on( "message", function ( msg ) {
 			} else {
 				logs += ", statue: start"
 			}
+		} else {
+			logs += ", statue: new";
+			if (
+				setting.set( id.toString(), "statue", "start" ) &&
+				setting.set( id.toString(), "articlepath", conf.defaultArticlepath )
+			) {
+				channel.send( message( "bot-start" ) );
+			} else {
+				logs += ", error: can't writing setting";
+			}
+			
+			
 		}
-		parseret = parselink( content, setting.get( id.toString(), "articlepath" ) || "https://zh.wikipedia.org/wiki/" );
+		parseret = parselink( content, setting.get( id.toString(), "articlepath" ) || conf.defaultArticlepath );
 		if ( parseret.length > 0 ) {
-			logs += `, parse urls: \n${ parseret }`
+			logs += `, parse urls: \n${ parseret }`;
 			log.add( id, logs );
 			channel.send( parseret );
+		} else {
+			log.add( id, logs );
 		}
 	}
 } );

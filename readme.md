@@ -19,8 +19,6 @@ Discord中文維基百科連結Bot，發想於[Xi-Plus的Wikipedia-Link-Telegram
 * ```/optout``` 停用部分連結回覆（參數設定，使用[ECMAScript]的[正規表達式]）。
 * ```/articlepath``` 變更文章路徑。
 
-設定適用範圍是單一頻道，不是整個伺服器。
-
 本版本暫不支持將設定儲存至資料庫存放，若有想法歡迎在[此](https://github.com/sunny00217wm/DiscordWikipediaLinkBot/issues/1)提出或提出pull request。
 
 徵求有心人士將本業內容翻譯成英文。
