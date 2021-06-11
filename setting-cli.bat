@@ -16,4 +16,4 @@ IF EXIST "%dp0%\node.exe" (
 	SET "_PREFIX=%dp0%"
 )
 
-endLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "%_prog%"  "%_PREFIX%\lib\setting-client.js" %*
+endLocal & goto #_undefined_# 2>NUL || title %COMSPEC% & "%_prog%"  "%_PREFIX%\src\setting-cli.js" %*

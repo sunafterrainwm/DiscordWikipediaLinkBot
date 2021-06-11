@@ -1,4 +1,4 @@
-0#!/bin/sh
+#!/bin/sh
 basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
 
 case `uname` in
@@ -6,7 +6,7 @@ case `uname` in
 esac
 
 if [ -x "$basedir/node" ]; then
-  exec "$basedir/node"  "lib/setting-client.js" "$@"
+  exec "$basedir/node"  "src/setting-cli.js" "$@"
 else 
-  exec node  "$basedir/lib/setting-client.js" "$@"
+  exec node  "$basedir/src/setting-cli.js" "$@"
 fi

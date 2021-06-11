@@ -1,12 +1,12 @@
-module.exports = {
+{
     "env": {
-        "browser": true,
         "commonjs": true,
         "es2021": true
     },
     "extends": [
         "eslint:recommended",
-
+        "plugin:@typescript-eslint/recommended",
+		"./.eslint.common.json"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -16,9 +16,19 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
+		"strict": ["error", "global"],
+		"eqeqeq": [
+            "error",
+            "always",
+			{
+				"null": "ignore"
+            }
+        ],
 		"@typescript-eslint/no-var-requires": 0
     },
 	"globals": {
-		"process": true
+		"process": true,
+		"console": true,
+		"__dirname": true
 	}
-};
+}
