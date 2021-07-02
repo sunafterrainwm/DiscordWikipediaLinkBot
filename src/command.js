@@ -86,18 +86,6 @@ class Command {
 		}
 	}
 
-	404() {
-		this.logs.command = "404";
-		var statue = setting.get( this.msg.settingId, "404" );
-		if ( statue ) {
-			setting.set( this.msg.settingId, "404", false );
-			return message( "command-404-off" );
-		} else {
-			setting.set( this.msg.settingId, "404", true );
-			return message( "command-404-on" );
-		}
-	}
-
 	articlepath( l = [ "articlepath" ] ) {
 		this.logs.command = "articlepath";
 		if ( l[ 1 ] ) {
@@ -139,11 +127,11 @@ class Command {
 	setting() {
 		this.logs.command = "setting";
 		this.logs.settings = JSON.stringify( setting.get( this.msg.settingId ) );
-		return message( "command-setting-txt",
-			setting.get( this.msg.settingId, "statue" ),
-			setting.get( this.msg.settingId, "RegExp" ) || "$2",
-			setting.get( this.msg.settingId, "articlepath" )
-		).replace( message( "command-setting-regexpremove" ), "" );
+		return message( "command-setting-channelid", this.msg.channelId ) +
+			message( "command-setting-statue", setting.get( this.msg.settingId, "statue" ) ) +
+			( setting.get( this.msg.settingId, "RegExp" ) ? message( "command-setting-regexp", setting.get( this.msg.settingId, "RegExp" ) ) : "" ) +
+			message( "command-setting-articlepath", setting.get( this.msg.settingId, "articlepath" ) ) +
+			message( "command-setting-help" );
 	}
 }
 
@@ -185,9 +173,6 @@ module.exports = function ( $msg, logs ) {
 			break;
 		case "articlepath":
 			reply = $command.articlepath( l );
-			break;
-		case "404":
-			reply = $command[ 404 ]();
 			break;
 		case "setting":
 			reply = $command.setting();
